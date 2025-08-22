@@ -1,8 +1,8 @@
 ﻿using Lachi.Data.Entities.UserStuff;
 
-namespace Lachi.Data.Entities
+namespace Lachi.Data.Entities.VideoStuff
 {
-    public class Comment : BaseEntity
+    public class VideoComment : BaseEntity
     {
         public Guid OwnerId { get; set; }
         public User Owner { get; set; } = null!;
