@@ -2,8 +2,6 @@
 using Lachi.Data.Entities;
 using Lachi.Data.Entities.GameStuff;
 using Lachi.Data.Entities.UserStuff;
-
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,58 +23,11 @@ namespace Lachi.Data.Contexts
         {
             modelBuilder.ApplyConfiguration(new GameConfigs());
 
-            //    modelBuilder.Entity<Comment>(entity =>
-            //    {
-            //        entity.HasKey(c => c.Id);
+            modelBuilder.ApplyConfiguration(new CommentConfigs());
 
-            //        entity.Property(c => c.Body)
-            //              .IsRequired()
-            //              .HasMaxLength(1000);
+            modelBuilder.ApplyConfiguration(new CountryConfigs());
 
-            //        entity.Property(c => c.CreatedAt)
-            //              .HasDefaultValueSql("GETUTCDATE()");
-
-            //        entity.HasOne(c => c.Owner)
-            //              .WithMany(u => u.Comments)
-            //              .HasForeignKey(c => c.OwnerId)
-            //              .OnDelete(DeleteBehavior.Cascade);
-
-            //        entity.HasOne(c => c.Video)
-            //              .WithMany(v => v.Comments)
-            //              .HasForeignKey(c => c.VideoId)
-            //              .OnDelete(DeleteBehavior.Cascade);
-            //    });
-
-            //    modelBuilder.Entity<Country>(entity =>
-            //    {
-            //        entity.HasKey(c => c.Id);
-
-            //        entity.Property(c => c.Name)
-            //              .IsRequired()
-            //              .HasMaxLength(100);
-
-            //        entity.Property(c => c.Image)
-            //              .HasMaxLength(500);
-
-            //        entity.HasMany(c => c.GameStudios)
-            //              .WithOne(gs => gs.Country)
-            //              .HasForeignKey(gs => gs.CountryId)
-            //              .OnDelete(DeleteBehavior.Cascade);
-            //    });
-
-            //    modelBuilder.Entity<GameImage>(entity =>
-            //    {
-            //        entity.HasKey(i => i.Id);
-
-            //        entity.Property(i => i.Url)
-            //              .IsRequired()
-            //              .HasMaxLength(500);
-
-            //        entity.HasOne(i => i.Game)
-            //              .WithMany(g => g.Images)
-            //              .HasForeignKey(i => i.GameId)
-            //              .OnDelete(DeleteBehavior.Cascade);
-            //    });
+            modelBuilder.ApplyConfiguration(new GameImageConfigs());
         }
     }
 }
