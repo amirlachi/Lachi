@@ -1,8 +1,9 @@
 ﻿using Lachi.Data.Entities;
+using Lachi.Data.Entities.GameStuff;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Lachi.Data.Contexts.Configs
+namespace Lachi.Data.Contexts.Configs.GameStuff
 {
     public class CountryConfigs : IEntityTypeConfiguration<Country>
     {

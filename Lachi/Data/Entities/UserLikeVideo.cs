@@ -9,6 +9,6 @@ namespace Lachi.Data.Entities
         public Video Video { get; set; } = null!;
         public int UserId { get; set; }
         public User User { get; set; } = null!;
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
     }
 }
