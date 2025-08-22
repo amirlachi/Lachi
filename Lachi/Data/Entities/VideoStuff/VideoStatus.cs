@@ -1,4 +1,4 @@
-﻿namespace Lachi.Data.Entities
+﻿namespace Lachi.Data.Entities.VideoStuff
 {
     public enum VideoStatusType
     {

@@ -1,4 +1,6 @@
-﻿namespace Lachi.Data.Entities.GameStuff
+﻿using Lachi.Data.Entities.UserStuff;
+
+namespace Lachi.Data.Entities.GameStuff
 {
     public class Game : BaseEntity
     {
@@ -10,5 +12,6 @@
         public ICollection<GameImage> Images { get; set; } = null!;
         public string Description { get; set; } = null!;
         public ICollection<Genre> Genres { get; set; } = null!;
+        public ICollection<User>? FavoriteByUsers { get; set; }
     }
 }

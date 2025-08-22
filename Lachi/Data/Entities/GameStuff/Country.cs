@@ -1,6 +1,4 @@
-﻿using Lachi.Data.Entities.GameStuff;
-
-namespace Lachi.Data.Entities
+﻿namespace Lachi.Data.Entities.GameStuff
 {
     public class Country : BaseEntity
     {
