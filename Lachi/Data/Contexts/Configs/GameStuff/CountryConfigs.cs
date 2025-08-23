@@ -12,9 +12,6 @@ namespace Lachi.Data.Contexts.Configs.GameStuff
             builder.Property(c => c.Name)
                 .IsRequired()
                 .HasMaxLength(100);
-
-            builder.Property(c => c.FlagPath)
-                .HasMaxLength(500);
         }
     }
 }

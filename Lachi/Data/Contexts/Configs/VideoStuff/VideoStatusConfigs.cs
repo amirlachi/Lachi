@@ -10,7 +10,6 @@ namespace Lachi.Data.Contexts.Configs.VideoStuff
         {
             builder.Property(vs => vs.Status)
                 .IsRequired()
-                .HasConversion<string>()
                 .HasMaxLength(50);
         }
     }
