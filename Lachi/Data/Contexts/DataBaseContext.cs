@@ -1,4 +1,5 @@
 ﻿using Lachi.Data.Contexts.Configs.GameStuff;
+using Lachi.Data.Contexts.Configs.VideoStuff;
 using Lachi.Data.Entities;
 using Lachi.Data.Entities.GameStuff;
 using Lachi.Data.Entities.UserStuff;
@@ -44,7 +45,7 @@ namespace Lachi.Data.Contexts
 
             modelBuilder.ApplyConfiguration(new GameConfigs());
 
-            modelBuilder.ApplyConfiguration(new CommentConfigs());
+            modelBuilder.ApplyConfiguration(new VideoCommentConfigs());
 
             modelBuilder.ApplyConfiguration(new CountryConfigs());
 

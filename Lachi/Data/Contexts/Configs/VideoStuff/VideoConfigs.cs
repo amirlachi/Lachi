@@ -15,8 +15,6 @@ namespace Lachi.Data.Contexts.Configs.VideoStuff
             builder.Property(v => v.Description)
                 .HasMaxLength(2000);
             
-            builder.Property(v => v.ViewCount)
-                .HasDefaultValue(0);
         }
     }
 }
