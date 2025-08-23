@@ -10,7 +10,7 @@ namespace Lachi.Data.Entities
         public User CreatedBy { get; set; }
         public Guid? UpdatedById { get; set; }
         public User? UpdatedBy { get; set; }
-        public int? RemovedById { get; set; }
+        public Guid? RemovedById { get; set; }
         public User? RemovedBy { get; set; }
         public bool IsActive { get; set; }
         public bool IsRemoved { get; set; }
@@ -24,7 +24,7 @@ namespace Lachi.Data.Entities
         public User CreatedBy { get; set; } = null!;
         public Guid? UpdatedById { get; set; }
         public User? UpdatedBy { get; set; }
-        public int? RemovedById { get; set; }
+        public Guid? RemovedById { get; set; }
         public User? RemovedBy { get; set; }
         public bool IsActive { get; set; } = true;
         public bool IsRemoved { get; set; } = false;

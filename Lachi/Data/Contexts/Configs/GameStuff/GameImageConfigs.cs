@@ -1,7 +1,6 @@
 ﻿using Lachi.Data.Entities.GameStuff;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Data.Entity.ModelConfiguration;
 
 namespace Lachi.Data.Contexts.Configs.GameStuff
 {

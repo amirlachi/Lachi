@@ -10,15 +10,18 @@ namespace Lachi.Data.Contexts.Configs
         {
             builder.HasOne(b => b.CreatedBy)
                 .WithMany()
-                .HasForeignKey(b => b.CreatedById);
+                .HasForeignKey(b => b.CreatedById)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(b => b.UpdatedBy)
                 .WithMany()
-                .HasForeignKey(b => b.UpdatedById);
+                .HasForeignKey(b => b.UpdatedById)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(b => b.RemovedBy)
                 .WithMany()
-                .HasForeignKey(b => b.RemovedById);
+                .HasForeignKey(b => b.RemovedById)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 

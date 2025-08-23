@@ -56,6 +56,8 @@ namespace Lachi.Data.Contexts
             modelBuilder.ApplyConfiguration(new GenreConfigs());
 
             modelBuilder.ApplyConfiguration(new UserConfigs());
+
+            modelBuilder.ApplyConfiguration(new UserFollowConfigs());
             
             modelBuilder.ApplyConfiguration(new VideoCommentConfigs());
 

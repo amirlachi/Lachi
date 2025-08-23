@@ -7,7 +7,7 @@ namespace Lachi.Data.Entities
     {
         public int VideoId { get; set; }
         public Video Video { get; set; } = null!;
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public User User { get; set; } = null!;
         public DateTime Date { get; set; } = DateTime.Now;
     }

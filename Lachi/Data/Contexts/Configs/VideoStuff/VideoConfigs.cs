@@ -18,7 +18,7 @@ namespace Lachi.Data.Contexts.Configs.VideoStuff
                 .HasMaxLength(2000);
 
             builder.HasOne(v => v.Owner)
-                  .WithMany(u => u.Videos)
+                  .WithMany(u => u.UploadedVideos)
                   .HasForeignKey(v => v.OwnerId)
                   .OnDelete(DeleteBehavior.Cascade);
 
