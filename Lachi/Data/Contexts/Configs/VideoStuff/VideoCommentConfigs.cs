@@ -8,6 +8,8 @@ namespace Lachi.Data.Contexts.Configs.VideoStuff
     {
         public void Configure(EntityTypeBuilder<VideoComment> builder)
         {
+            builder.ConfigureBaseEntity();
+
             builder.Property(vc => vc.Body)
                 .IsRequired()
                 .HasMaxLength(2000);

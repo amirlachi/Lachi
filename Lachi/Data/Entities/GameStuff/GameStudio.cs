@@ -1,6 +1,6 @@
 ﻿namespace Lachi.Data.Entities.GameStuff
 {
-    public class GameStudio
+    public class GameStudio: BaseEntity
     {
         public string Title { get; set; } = null!;
         public string ImagePath { get; set; } = null!;

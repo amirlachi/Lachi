@@ -1,4 +1,5 @@
-﻿using Lachi.Data.Entities.GameStuff;
+﻿using Lachi.Data.Contexts.Configs;
+using Lachi.Data.Entities.GameStuff;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -9,6 +10,8 @@ namespace Lachi.Data.Contexts.Configs.GameStuff
     {
         public void Configure(EntityTypeBuilder<Game> builder)
         {
+            builder.ConfigureBaseEntity();
+
             builder.Property(g => g.Title)
                 .IsRequired()
                 .HasMaxLength(200);

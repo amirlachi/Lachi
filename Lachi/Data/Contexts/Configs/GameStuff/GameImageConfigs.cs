@@ -9,6 +9,8 @@ namespace Lachi.Data.Contexts.Configs.GameStuff
     {
         public void Configure(EntityTypeBuilder<GameImage> builder)
         {
+            builder.ConfigureBaseEntity();
+
             builder.Property(i => i.Path)
                 .IsRequired();
         }

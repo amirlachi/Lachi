@@ -15,7 +15,7 @@ namespace Lachi.Data.Entities
         public bool IsActive { get; set; }
         public bool IsRemoved { get; set; }
     }
-    public class BaseEntity:IBaseEntity
+    public class BaseEntity : IBaseEntity
     {
         public int Id { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;

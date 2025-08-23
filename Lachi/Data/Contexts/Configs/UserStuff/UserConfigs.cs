@@ -9,6 +9,8 @@ namespace Lachi.Data.Contexts.Configs.UserStuff
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.ConfigureBaseEntity();
+
             builder.Property(x => x.Bio)
                 .HasMaxLength(180);
         }

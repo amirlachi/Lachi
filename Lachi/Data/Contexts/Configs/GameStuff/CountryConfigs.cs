@@ -9,6 +9,8 @@ namespace Lachi.Data.Contexts.Configs.GameStuff
     {
         public void Configure(EntityTypeBuilder<Country> builder)
         {
+            builder.ConfigureBaseEntity();
+
             builder.Property(c => c.Name)
                 .IsRequired()
                 .HasMaxLength(100);

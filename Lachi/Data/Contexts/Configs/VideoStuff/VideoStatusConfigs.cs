@@ -8,6 +8,8 @@ namespace Lachi.Data.Contexts.Configs.VideoStuff
     {
         public void Configure(EntityTypeBuilder<VideoStatus> builder)
         {
+            builder.ConfigureBaseEntity();
+
             builder.Property(vs => vs.Status)
                 .IsRequired()
                 .HasMaxLength(50);
