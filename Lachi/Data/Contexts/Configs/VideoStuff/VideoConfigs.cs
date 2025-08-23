@@ -1,4 +1,5 @@
-﻿using Lachi.Data.Entities.VideoStuff;
+﻿using Lachi.Data.Entities.UserStuff;
+using Lachi.Data.Entities.VideoStuff;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -23,7 +24,17 @@ namespace Lachi.Data.Contexts.Configs.VideoStuff
                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(v => v.FavoriteByUsers)
-                  .WithMany(u => u.FavoriteVideos);
+                  .WithMany(u => u.FavoriteVideos).UsingEntity<Dictionary<string, object>>(
+                       "UserVideo",  // نام جدول واسط
+                       j => j.HasOne<User>()
+                             .WithMany()
+                             .HasForeignKey("UserId")
+                             .OnDelete(DeleteBehavior.Restrict), // ⚡ مهم
+                       j => j.HasOne<Video>()
+                             .WithMany()
+                             .HasForeignKey("VideoId")
+                             .OnDelete(DeleteBehavior.Restrict)  // ⚡ مهم
+                  );
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Lachi.Data.Contexts.Configs.VideoStuff
             builder.HasOne(vc => vc.Owner)
                 .WithMany(u => u.VideoComments)
                 .HasForeignKey(vc => vc.OwnerId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

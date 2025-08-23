@@ -12,11 +12,13 @@ namespace Lachi.Data.Contexts.Configs
 
             builder.HasOne(uw => uw.Video)
                 .WithMany(v => v.UserWatches)
-                .HasForeignKey(uw => uw.VideoId);
+                .HasForeignKey(uw => uw.VideoId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(uw => uw.User)
                 .WithMany(u => u.WatchedVideos)
-                .HasForeignKey(uw => uw.UserId);
+                .HasForeignKey(uw => uw.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
