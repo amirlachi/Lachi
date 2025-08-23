@@ -19,6 +19,10 @@ namespace Lachi.Data.Contexts.Configs.GameStuff
 
             builder.Property(g => g.TrailerVideoPath)
                 .IsRequired();
+
+            builder.HasMany(g => g.FavoriteByUsers)
+                .WithMany(u => u.FavoriteGames);
+
         }
     }
 }

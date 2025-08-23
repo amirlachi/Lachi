@@ -9,6 +9,14 @@ namespace Lachi.Data.Contexts.Configs
         public void Configure(EntityTypeBuilder<UserLikeVideo> builder)
         {
             builder.HasKey(ul => new { ul.VideoId, ul.UserId });
+
+            builder.HasOne(ul => ul.Video)
+                .WithMany(v => v.UserLikes)
+                .HasForeignKey(ul => ul.VideoId);
+
+            builder.HasOne(ul => ul.User)
+                .WithMany(u => u.LikedVideos)
+                .HasForeignKey(ul => ul.UserId);
         }
     }
 }

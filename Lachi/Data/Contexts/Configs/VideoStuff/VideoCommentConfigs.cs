@@ -11,6 +11,11 @@ namespace Lachi.Data.Contexts.Configs.VideoStuff
             builder.Property(vc => vc.Body)
                 .IsRequired()
                 .HasMaxLength(2000);
+
+            builder.HasOne(vc => vc.Owner)
+                .WithMany(u => u.VideoComments)
+                .HasForeignKey(vc => vc.OwnerId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

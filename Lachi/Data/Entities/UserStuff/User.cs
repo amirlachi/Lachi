@@ -8,6 +8,7 @@ namespace Lachi.Data.Entities.UserStuff
     public class User:IdentityUser<Guid>, IBaseEntity
     {
         public string? Bio { get; init; }
+        public ICollection<Video> Videos { get; set; } = new List<Video>();
         public ICollection<Video>? FavoriteVideos { get; set; }
         public ICollection<Game>? FavoriteGames { get; set; }
         public ICollection<Video>? UploadedVideos { get; set; }
@@ -16,6 +17,7 @@ namespace Lachi.Data.Entities.UserStuff
         public ICollection<VideoComment>? Comments { get; set; }
         public ICollection<UserLikeVideo>? LikedVideos { get; set; }
         public ICollection<UserWatchVideo>? WatchedVideos { get; set; }
+        public ICollection<VideoComment> VideoComments { get; set; } = new List<VideoComment>();
 
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; }

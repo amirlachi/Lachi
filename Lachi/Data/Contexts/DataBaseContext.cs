@@ -1,4 +1,7 @@
-﻿using Lachi.Data.Contexts.Configs.GameStuff;
+﻿using Lachi.Data.Contexts.Configs;
+using Lachi.Data.Contexts.Configs.GameStuff;
+using Lachi.Data.Contexts.Configs.UserStuff;
+using Lachi.Data.Contexts.Configs.VideoStuff;
 using Lachi.Data.Entities;
 using Lachi.Data.Entities.GameStuff;
 using Lachi.Data.Entities.UserStuff;
@@ -42,13 +45,27 @@ namespace Lachi.Data.Contexts
         {
             base.OnModelCreating(modelBuilder); // for identity default configs
 
-            modelBuilder.ApplyConfiguration(new GameConfigs());
-
-            modelBuilder.ApplyConfiguration(new CommentConfigs());
-
             modelBuilder.ApplyConfiguration(new CountryConfigs());
 
+            modelBuilder.ApplyConfiguration(new GameConfigs());
+
             modelBuilder.ApplyConfiguration(new GameImageConfigs());
+
+            modelBuilder.ApplyConfiguration(new GameStudioConfigs());
+
+            modelBuilder.ApplyConfiguration(new GenreConfigs());
+
+            modelBuilder.ApplyConfiguration(new UserConfigs());
+            
+            modelBuilder.ApplyConfiguration(new VideoCommentConfigs());
+
+            modelBuilder.ApplyConfiguration(new VideoConfigs());
+
+            modelBuilder.ApplyConfiguration(new VideoStatusConfigs());
+
+            modelBuilder.ApplyConfiguration(new UserLikeVideoConfigs());
+
+            modelBuilder.ApplyConfiguration(new UserWatchVideoConfigs());
         }
     }
 }
