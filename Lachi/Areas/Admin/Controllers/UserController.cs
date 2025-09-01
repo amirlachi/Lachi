@@ -2,10 +2,15 @@
 
 namespace Lachi.Areas.Admin.Controllers
 {
-    public class UsersController : Controller
+    public class UserController : Controller
     {
         [Area("Admin")]
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Create()
         {
             return View();
         }

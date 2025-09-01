@@ -7,6 +7,8 @@ namespace Lachi.Data.Entities.UserStuff
 {
     public class User:IdentityUser<Guid>, IBaseEntity
     {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
         public string? Bio { get; set; }
         public ICollection<Video>? FavoriteVideos { get; set; }
         public ICollection<Game>? FavoriteGames { get; set; }

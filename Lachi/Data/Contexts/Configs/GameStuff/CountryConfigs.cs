@@ -11,6 +11,9 @@ namespace Lachi.Data.Contexts.Configs.GameStuff
         {
             builder.ConfigureBaseEntity();
 
+            builder.HasIndex(x => x.Name)
+                .IsUnique();
+
             builder.Property(c => c.Name)
                 .IsRequired()
                 .HasMaxLength(100);

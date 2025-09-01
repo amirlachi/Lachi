@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
+using System;
+
 namespace Lachi.Data.Contexts
 {
     public class DataBaseContext : IdentityDbContext<User, Role, Guid>
@@ -45,31 +47,55 @@ namespace Lachi.Data.Contexts
         {
             base.OnModelCreating(modelBuilder); // for identity default configs
 
-            modelBuilder.ApplyConfiguration(new CountryConfigs());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataBaseContext).Assembly);
 
-            modelBuilder.ApplyConfiguration(new GameConfigs());
+            _UserSeeding(modelBuilder);
+        }
 
-            modelBuilder.ApplyConfiguration(new GameImageConfigs());
 
-            modelBuilder.ApplyConfiguration(new GameStudioConfigs());
 
-            modelBuilder.ApplyConfiguration(new GenreConfigs());
-
-            modelBuilder.ApplyConfiguration(new UserConfigs());
-
-            modelBuilder.ApplyConfiguration(new RoleConfigs());
-
-            modelBuilder.ApplyConfiguration(new UserFollowConfigs());
+        private void _UserSeeding(ModelBuilder builder)
+        {
+            var roleId = "4a3b544c-b8dc-440f-9f74-a93d9a105ab7";
+            var adminId = "fb129ef4-22b7-4fe4-b669-c95972bf5025";
             
-            modelBuilder.ApplyConfiguration(new VideoCommentConfigs());
+            //seedRole
+            builder.Entity<Role>().HasData(new Role
+            {
+                Name = "SuperAdmin",
+                NormalizedName = "SUPERADMIN",
+                Id = Guid.Parse(roleId),
+                ConcurrencyStamp = roleId,
+                CreatedById = Guid.Parse(adminId),
+            });
 
-            modelBuilder.ApplyConfiguration(new VideoConfigs());
+            //createAdmin
+            var admin = new User
+            {
+                Id = Guid.Parse(adminId),
+                UserName = "ar.lachi@lachi.com",
+                NormalizedUserName = "AR.LACHI@LACHI.COM",
+                Email = "ar.lachi@lachi.com",
+                NormalizedEmail = "ar.lachi@lachi.com",
+                EmailConfirmed = true,
+                FirstName = "امیر رضا",
+                LastName = "لچینانی",
+                CreatedById = Guid.Parse(adminId),
+            };
 
-            modelBuilder.ApplyConfiguration(new VideoStatusConfigs());
+            //setAdminPassword
+            var passwordHasher = new PasswordHasher<User>();
+            admin.PasswordHash = passwordHasher.HashPassword(admin, "ArLachi123@");
 
-            modelBuilder.ApplyConfiguration(new UserLikeVideoConfigs());
+            //seedAdmin
+            builder.Entity<User>().HasData(admin);
 
-            modelBuilder.ApplyConfiguration(new UserWatchVideoConfigs());
+            //seedIdentityUserRole
+            builder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
+            {
+                UserId = Guid.Parse(adminId),
+                RoleId = Guid.Parse(roleId),
+            });
         }
     }
 }
