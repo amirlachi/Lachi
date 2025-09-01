@@ -12,15 +12,18 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 using System;
+using System.Security.Claims;
 
 namespace Lachi.Data.Contexts
 {
     public class DataBaseContext : IdentityDbContext<User, Role, Guid>
     {
-        public DataBaseContext(DbContextOptions options) : base(options)
+        private readonly IHttpContextAccessor httpContextAccessor;
+        public DataBaseContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
-
+            this.httpContextAccessor = httpContextAccessor;
         }
+
         #region GameStuff
         public DbSet<Game> Games { get; set; }
         public DbSet<GameStudio> GameStudios { get; set; }
@@ -48,6 +51,26 @@ namespace Lachi.Data.Contexts
             base.OnModelCreating(modelBuilder); // for identity default configs
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataBaseContext).Assembly);
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var userId = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            foreach (var entry in ChangeTracker.Entries<IBaseEntity>())
+            {
+                if (entry.State == EntityState.Added && userId is not null)
+                {
+                    entry.Entity.CreatedById = Guid.Parse(userId);
+                }
+                else if (entry.State == EntityState.Modified && userId is not null)
+                {
+                    entry.Entity.UpdateAt = DateTime.Now;
+                    entry.Entity.UpdatedById = Guid.Parse(userId);
+                }
+            }
+
+            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }

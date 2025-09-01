@@ -1,3 +1,4 @@
+using Lachi;
 using Lachi.Areas.Admin.Mappings;
 using Lachi.Data.Contexts;
 using Lachi.Data.Entities.UserStuff;
@@ -14,7 +15,22 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<DataBaseContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    //.AddRoles<Role>()
+    .AddErrorDescriber<CustomIdentityError>();
+
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, UserClaimsPrincipalFactory>();
+
+builder.Services.ConfigureApplicationCookie(option =>
+{
+    // cookie setting
+    option.ExpireTimeSpan = TimeSpan.FromHours(12);
+
+    option.LoginPath = "/Auth/Login";
+    option.AccessDeniedPath = "/Auth/AccessDenied";
+    option.SlidingExpiration = true;
+});
+
 
 builder.Services.AddAutoMapper(options =>
 {
@@ -36,6 +52,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

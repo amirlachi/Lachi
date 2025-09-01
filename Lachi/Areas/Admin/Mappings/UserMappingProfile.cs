@@ -23,4 +23,13 @@ namespace Lachi.Areas.Admin.Mappings
                            opt => opt.MapFrom(src => src != null ? src.FirstName + " " + src.LastName : string.Empty));
         }
     }
+
+    public class UserCreateMappingProfile: Profile
+    {
+        public UserCreateMappingProfile()
+        {
+            CreateMap<UserCreateDto, User>()
+                .ForMember(x => x.Email, opt => opt.MapFrom(y => y.UserName));
+        }
+    }
 }
