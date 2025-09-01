@@ -3,6 +3,7 @@ using Lachi.Data.Entities.GameStuff;
 using Lachi.Models.Common;
 using Lachi.Utilities;
 
+using System.Diagnostics.Metrics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,8 +11,11 @@ namespace Lachi.Services
 {
     public class CountryService(DataBaseContext db)
     {
-        public IQueryable<Country> Get() =>
-            db.Countries.Where(x => !x.IsRemoved && x.IsActive);
+        public IQueryable<Country> Get() => db.Countries.Where(x => !x.IsRemoved && x.IsActive);
+        public Country? Get(string name) => Get().FirstOrDefault(x => x.Name == name);
+
+        public bool IsExist(string name) => Get().Any(x => x.Name == name);
+        public bool IsExistTotaly(string name) => db.Countries.Any(x => x.Name == name);
 
         public async Task<ResultDto> Create(Country country) 
         {
@@ -31,7 +35,7 @@ namespace Lachi.Services
                 var saveRes = await db.SaveChangesAsync();
 
                 return saveRes > 0 ? new ResultDto(true)
-                    : new ResultDto(false, "کشور جدید درج نشد!";
+                    : new ResultDto(false, "کشور جدید درج نشد!");
             }
             catch (Exception)
             {
