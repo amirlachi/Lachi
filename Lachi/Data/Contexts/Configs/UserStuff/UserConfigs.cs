@@ -11,6 +11,19 @@ namespace Lachi.Data.Contexts.Configs.UserStuff
         {
             builder.ConfigureBaseEntity();
 
+            builder.HasIndex(x => x.UserName)
+                .IsUnique();
+
+            builder.HasIndex(x => x.Email)
+                .IsUnique();
+
+            builder.Property(x => x.UserName)
+                .IsRequired()
+                .HasMaxLength(150);
+
+            builder.Property(x => x.Email)
+                .IsRequired()
+                .HasMaxLength(200);
 
             builder.Property(x => x.FirstName)
                 .HasMaxLength(20);

@@ -1,4 +1,7 @@
 using Lachi.Data.Contexts;
+using Lachi.Data.Entities.UserStuff;
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +12,10 @@ builder.Services.AddDbContext<DataBaseContext>(option=> {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddIdentity<User, Role>()
+    .AddEntityFrameworkStores<DataBaseContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
@@ -28,11 +35,12 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

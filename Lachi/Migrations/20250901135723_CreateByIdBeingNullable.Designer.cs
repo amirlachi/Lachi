@@ -4,6 +4,7 @@ using Lachi.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lachi.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250901135723_CreateByIdBeingNullable")]
+    partial class CreateByIdBeingNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +66,7 @@ namespace Lachi.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FlagPath")
@@ -114,7 +117,7 @@ namespace Lachi.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -176,7 +179,7 @@ namespace Lachi.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("GameId")
@@ -228,7 +231,7 @@ namespace Lachi.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -287,7 +290,7 @@ namespace Lachi.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
@@ -352,7 +355,7 @@ namespace Lachi.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -418,7 +421,7 @@ namespace Lachi.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -561,7 +564,7 @@ namespace Lachi.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -633,7 +636,7 @@ namespace Lachi.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
@@ -688,7 +691,7 @@ namespace Lachi.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
@@ -879,8 +882,7 @@ namespace Lachi.Migrations
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "RemovedBy")
                         .WithMany()
@@ -904,8 +906,7 @@ namespace Lachi.Migrations
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Lachi.Data.Entities.GameStuff.GameStudio", "GameStudio")
                         .WithMany()
@@ -937,8 +938,7 @@ namespace Lachi.Migrations
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Lachi.Data.Entities.GameStuff.Game", "Game")
                         .WithMany("Images")
@@ -976,8 +976,7 @@ namespace Lachi.Migrations
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "RemovedBy")
                         .WithMany()
@@ -1003,8 +1002,7 @@ namespace Lachi.Migrations
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "RemovedBy")
                         .WithMany()
@@ -1047,8 +1045,7 @@ namespace Lachi.Migrations
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "RemovedBy")
                         .WithMany()
@@ -1072,8 +1069,7 @@ namespace Lachi.Migrations
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "RemovedBy")
                         .WithMany()
@@ -1135,8 +1131,7 @@ namespace Lachi.Migrations
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Lachi.Data.Entities.GameStuff.Game", "Game")
                         .WithMany()
@@ -1176,8 +1171,7 @@ namespace Lachi.Migrations
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "Owner")
                         .WithMany("VideoComments")
@@ -1221,8 +1215,7 @@ namespace Lachi.Migrations
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "RemovedBy")
                         .WithMany()

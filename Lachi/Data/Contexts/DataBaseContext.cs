@@ -48,54 +48,6 @@ namespace Lachi.Data.Contexts
             base.OnModelCreating(modelBuilder); // for identity default configs
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataBaseContext).Assembly);
-
-            _UserSeeding(modelBuilder);
-        }
-
-
-
-        private void _UserSeeding(ModelBuilder builder)
-        {
-            var roleId = "4a3b544c-b8dc-440f-9f74-a93d9a105ab7";
-            var adminId = "fb129ef4-22b7-4fe4-b669-c95972bf5025";
-            
-            //seedRole
-            builder.Entity<Role>().HasData(new Role
-            {
-                Name = "SuperAdmin",
-                NormalizedName = "SUPERADMIN",
-                Id = Guid.Parse(roleId),
-                ConcurrencyStamp = roleId,
-                CreatedById = Guid.Parse(adminId),
-            });
-
-            //createAdmin
-            var admin = new User
-            {
-                Id = Guid.Parse(adminId),
-                UserName = "ar.lachi@lachi.com",
-                NormalizedUserName = "AR.LACHI@LACHI.COM",
-                Email = "ar.lachi@lachi.com",
-                NormalizedEmail = "ar.lachi@lachi.com",
-                EmailConfirmed = true,
-                FirstName = "امیر رضا",
-                LastName = "لچینانی",
-                CreatedById = Guid.Parse(adminId),
-            };
-
-            //setAdminPassword
-            var passwordHasher = new PasswordHasher<User>();
-            admin.PasswordHash = passwordHasher.HashPassword(admin, "ArLachi123@");
-
-            //seedAdmin
-            builder.Entity<User>().HasData(admin);
-
-            //seedIdentityUserRole
-            builder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
-            {
-                UserId = Guid.Parse(adminId),
-                RoleId = Guid.Parse(roleId),
-            });
         }
     }
 }
