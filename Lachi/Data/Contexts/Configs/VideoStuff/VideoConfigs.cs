@@ -25,15 +25,15 @@ namespace Lachi.Data.Contexts.Configs.VideoStuff
 
             builder.HasMany(v => v.FavoriteByUsers)
                   .WithMany(u => u.FavoriteVideos).UsingEntity<Dictionary<string, object>>(
-                       "UserVideo",  // نام جدول واسط
+                       "UserVideo",
                        j => j.HasOne<User>()
                              .WithMany()
                              .HasForeignKey("UserId")
-                             .OnDelete(DeleteBehavior.Restrict), // ⚡ مهم
+                             .OnDelete(DeleteBehavior.Restrict),
                        j => j.HasOne<Video>()
                              .WithMany()
                              .HasForeignKey("VideoId")
-                             .OnDelete(DeleteBehavior.Restrict)  // ⚡ مهم
+                             .OnDelete(DeleteBehavior.Restrict)
                   );
         }
     }
