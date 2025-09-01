@@ -1,3 +1,4 @@
+using Lachi.Areas.Admin.Mappings;
 using Lachi.Data.Contexts;
 using Lachi.Data.Entities.UserStuff;
 
@@ -5,8 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 
 builder.Services.AddDbContext<DataBaseContext>(option=> {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -16,6 +15,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<DataBaseContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddAutoMapper(options =>
+{
+    options.AddMaps(typeof(UserMappingProfile).Assembly);
+});
 
 var app = builder.Build();
 
