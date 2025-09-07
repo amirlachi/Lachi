@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Lachi.Data.Contexts;
+using Lachi.Services;
 
 namespace Lachi.Controllers
 {
-    public class AuthController(DataBaseContext db, SignInManager<User> signInManager, UserManager<User> userManager) : Controller
+    public class AuthController(DataBaseContext db, SignInManager<User> signInManager, UserManager<User> userManager, ChannelService channelService) : Controller
     {
         public IActionResult Login(string? returnUrl = null)
         {
@@ -64,23 +65,23 @@ namespace Lachi.Controllers
                 IsActive = true,
                 IsRemoved = false,
                 CreateAt = DateTime.UtcNow,
-                CreatedById = new Guid("b3f6841d-be7a-4724-c605-08dde95f8d64")
+                //CreatedById = new Guid("b3f6841d-be7a-4724-c605-08dde95f8d64")
             };
 
             var result = await userManager.CreateAsync(user, dto.Password);
 
             if (result.Succeeded)
             {
-                await signInManager.SignInAsync(user, isPersistent: false);
+                await signInManager.SignInAsync(user, isPersistent: true);
 
                 var channel = new UserChannel
                 {
                     UserId = user.Id,
                     Name = $"{user.UserName} Channel",
-                    CreateAt = DateTime.UtcNow
+                    CreateAt = DateTime.Now
                 };
-                db.UserChannels.Add(channel);
-                await db.SaveChangesAsync();
+
+                await channelService.Create(channel);
 
                 if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     return Redirect(returnUrl);

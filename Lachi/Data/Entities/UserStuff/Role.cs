@@ -8,8 +8,8 @@ namespace Lachi.Data.Entities.UserStuff
 
         public DateTime CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; }
-        public Guid CreatedById { get; set; }
-        public User CreatedBy { get; set; } = null!;
+        public Guid? CreatedById { get; set; }
+        public User? CreatedBy { get; set; }
         public Guid? UpdatedById { get; set; }
         public User? UpdatedBy { get; set; }
         public Guid? RemovedById { get; set; }

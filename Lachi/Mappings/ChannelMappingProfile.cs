@@ -12,7 +12,7 @@ namespace Lachi.Mappings
         {
             CreateMap<UserChannel, UserChannelDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User!.UserName))
                 .ForMember(dest => dest.Videos, opt => opt.MapFrom(src => src.Videos))
                 .ForMember(dest => dest.Playlists, opt => opt.MapFrom(src => src.Playlists));
 

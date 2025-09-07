@@ -6,16 +6,23 @@ using Lachi.Models.Channel;
 using Lachi.Models.Common;
 using Lachi.Services;
 using Lachi.Utilities;
+using Lachi.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lachi.Controllers
 {
+    [Authorize]
     public class ChannelController(ChannelService channelService, IMapper mapper) : Controller
     {
-        public async Task<IActionResult> Manage(Guid id)
+        public async Task<IActionResult> Manage()
         {
-            var channel = await channelService.GetById(id);
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userIdStr == null) return NotFound();
+            var channel = await channelService.GetById(Guid.Parse(userIdStr));
             if (channel == null) return NotFound();
 
             var dto = mapper.Map<UserChannelDto>(channel);
