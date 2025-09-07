@@ -34,9 +34,11 @@ namespace Lachi.Data.Contexts
 
         #region UserStuff
         public DbSet<UserFollow> UserFollows { get; set; }
+        public DbSet<UserChannel> UserChannels { get; set; }
         #endregion
 
         #region VideoStuff
+        public DbSet<Playlist> Playlists { get; set; }
         public DbSet<Video> Videos { get; set; }
         public DbSet<VideoComment> VideoComments { get; set; }
         public DbSet<VideoStatus> VideoStatuses { get; set; }

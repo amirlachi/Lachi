@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lachi.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20250901134930_User_UserNameAndEmailConfigs")]
-    partial class User_UserNameAndEmailConfigs
+    [Migration("20250906110112_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -514,6 +514,70 @@ namespace Lachi.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Lachi.Data.Entities.UserStuff.UserChannel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BannerImagePath")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("ProfileImagePath")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<Guid?>("RemovedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("RemovedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserChannels");
+                });
+
             modelBuilder.Entity("Lachi.Data.Entities.UserStuff.UserFollow", b =>
                 {
                     b.Property<Guid>("FollowerId")
@@ -551,6 +615,60 @@ namespace Lachi.Migrations
                     b.HasIndex("VideoId");
 
                     b.ToTable("UserWatchVideos");
+                });
+
+            modelBuilder.Entity("Lachi.Data.Entities.VideoStuff.Playlist", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<Guid?>("RemovedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdatedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("UserChannelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("RemovedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.HasIndex("UserChannelId");
+
+                    b.ToTable("Playlists");
                 });
 
             modelBuilder.Entity("Lachi.Data.Entities.VideoStuff.Video", b =>
@@ -602,6 +720,9 @@ namespace Lachi.Migrations
                     b.Property<Guid?>("UpdatedById")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("UserChannelId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ViewCount")
                         .HasColumnType("int");
 
@@ -616,6 +737,8 @@ namespace Lachi.Migrations
                     b.HasIndex("RemovedById");
 
                     b.HasIndex("UpdatedById");
+
+                    b.HasIndex("UserChannelId");
 
                     b.ToTable("Videos");
                 });
@@ -830,6 +953,21 @@ namespace Lachi.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("PlaylistVideo", b =>
+                {
+                    b.Property<int>("PlaylistsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VideosId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlaylistsId", "VideosId");
+
+                    b.HasIndex("VideosId");
+
+                    b.ToTable("PlaylistVideo");
                 });
 
             modelBuilder.Entity("UserVideo", b =>
@@ -1095,6 +1233,39 @@ namespace Lachi.Migrations
                     b.Navigation("UpdatedBy");
                 });
 
+            modelBuilder.Entity("Lachi.Data.Entities.UserStuff.UserChannel", b =>
+                {
+                    b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Lachi.Data.Entities.UserStuff.User", "RemovedBy")
+                        .WithMany()
+                        .HasForeignKey("RemovedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Lachi.Data.Entities.UserStuff.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Lachi.Data.Entities.UserStuff.User", "User")
+                        .WithOne("UserChannel")
+                        .HasForeignKey("Lachi.Data.Entities.UserStuff.UserChannel", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("RemovedBy");
+
+                    b.Navigation("UpdatedBy");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Lachi.Data.Entities.UserStuff.UserFollow", b =>
                 {
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "Follower")
@@ -1133,6 +1304,39 @@ namespace Lachi.Migrations
                     b.Navigation("Video");
                 });
 
+            modelBuilder.Entity("Lachi.Data.Entities.VideoStuff.Playlist", b =>
+                {
+                    b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Lachi.Data.Entities.UserStuff.User", "RemovedBy")
+                        .WithMany()
+                        .HasForeignKey("RemovedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Lachi.Data.Entities.UserStuff.User", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Lachi.Data.Entities.UserStuff.UserChannel", "UserChannel")
+                        .WithMany("Playlists")
+                        .HasForeignKey("UserChannelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("RemovedBy");
+
+                    b.Navigation("UpdatedBy");
+
+                    b.Navigation("UserChannel");
+                });
+
             modelBuilder.Entity("Lachi.Data.Entities.VideoStuff.Video", b =>
                 {
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", "CreatedBy")
@@ -1163,6 +1367,12 @@ namespace Lachi.Migrations
                         .HasForeignKey("UpdatedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("Lachi.Data.Entities.UserStuff.UserChannel", "UserChannel")
+                        .WithMany("Videos")
+                        .HasForeignKey("UserChannelId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("CreatedBy");
 
                     b.Navigation("Game");
@@ -1172,6 +1382,8 @@ namespace Lachi.Migrations
                     b.Navigation("RemovedBy");
 
                     b.Navigation("UpdatedBy");
+
+                    b.Navigation("UserChannel");
                 });
 
             modelBuilder.Entity("Lachi.Data.Entities.VideoStuff.VideoComment", b =>
@@ -1303,6 +1515,21 @@ namespace Lachi.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PlaylistVideo", b =>
+                {
+                    b.HasOne("Lachi.Data.Entities.VideoStuff.Playlist", null)
+                        .WithMany()
+                        .HasForeignKey("PlaylistsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lachi.Data.Entities.VideoStuff.Video", null)
+                        .WithMany()
+                        .HasForeignKey("VideosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("UserVideo", b =>
                 {
                     b.HasOne("Lachi.Data.Entities.UserStuff.User", null)
@@ -1340,9 +1567,18 @@ namespace Lachi.Migrations
 
                     b.Navigation("UploadedVideos");
 
+                    b.Navigation("UserChannel");
+
                     b.Navigation("VideoComments");
 
                     b.Navigation("WatchedVideos");
+                });
+
+            modelBuilder.Entity("Lachi.Data.Entities.UserStuff.UserChannel", b =>
+                {
+                    b.Navigation("Playlists");
+
+                    b.Navigation("Videos");
                 });
 
             modelBuilder.Entity("Lachi.Data.Entities.VideoStuff.Video", b =>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Lachi.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,6 +16,8 @@ namespace Lachi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Bio = table.Column<string>(type: "nvarchar(180)", maxLength: 180, nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -24,9 +26,9 @@ namespace Lachi.Migrations
                     RemovedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsRemoved = table.Column<bool>(type: "bit", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -241,6 +243,54 @@ namespace Lachi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserChannels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ProfileImagePath = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    BannerImagePath = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedById = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RemovedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsRemoved = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserChannels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserChannels_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserChannels_AspNetUsers_RemovedById",
+                        column: x => x.RemovedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserChannels_AspNetUsers_UpdatedById",
+                        column: x => x.UpdatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserChannels_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserFollows",
                 columns: table => new
                 {
@@ -354,6 +404,52 @@ namespace Lachi.Migrations
                         name: "FK_GameStudios_Countries_CountryId",
                         column: x => x.CountryId,
                         principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Playlists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    UserChannelId = table.Column<int>(type: "int", nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedById = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RemovedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsRemoved = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Playlists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Playlists_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Playlists_AspNetUsers_RemovedById",
+                        column: x => x.RemovedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Playlists_AspNetUsers_UpdatedById",
+                        column: x => x.UpdatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Playlists_UserChannels_UserChannelId",
+                        column: x => x.UserChannelId,
+                        principalTable: "UserChannels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -511,6 +607,7 @@ namespace Lachi.Migrations
                     Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GameId = table.Column<int>(type: "int", nullable: false),
+                    UserChannelId = table.Column<int>(type: "int", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedById = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -550,6 +647,36 @@ namespace Lachi.Migrations
                         name: "FK_Videos_Games_GameId",
                         column: x => x.GameId,
                         principalTable: "Games",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Videos_UserChannels_UserChannelId",
+                        column: x => x.UserChannelId,
+                        principalTable: "UserChannels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlaylistVideo",
+                columns: table => new
+                {
+                    PlaylistsId = table.Column<int>(type: "int", nullable: false),
+                    VideosId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlaylistVideo", x => new { x.PlaylistsId, x.VideosId });
+                    table.ForeignKey(
+                        name: "FK_PlaylistVideo_Playlists_PlaylistsId",
+                        column: x => x.PlaylistsId,
+                        principalTable: "Playlists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PlaylistVideo_Videos_VideosId",
+                        column: x => x.VideosId,
+                        principalTable: "Videos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -785,6 +912,12 @@ namespace Lachi.Migrations
                 column: "CreatedById");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_Email",
+                table: "AspNetUsers",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_RemovedById",
                 table: "AspNetUsers",
                 column: "RemovedById");
@@ -793,6 +926,12 @@ namespace Lachi.Migrations
                 name: "IX_AspNetUsers_UpdatedById",
                 table: "AspNetUsers",
                 column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_UserName",
+                table: "AspNetUsers",
+                column: "UserName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -805,6 +944,12 @@ namespace Lachi.Migrations
                 name: "IX_Countries_CreatedById",
                 table: "Countries",
                 column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Countries_Name",
+                table: "Countries",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Countries_RemovedById",
@@ -902,6 +1047,52 @@ namespace Lachi.Migrations
                 column: "UpdatedById");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Playlists_CreatedById",
+                table: "Playlists",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Playlists_RemovedById",
+                table: "Playlists",
+                column: "RemovedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Playlists_UpdatedById",
+                table: "Playlists",
+                column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Playlists_UserChannelId",
+                table: "Playlists",
+                column: "UserChannelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlaylistVideo_VideosId",
+                table: "PlaylistVideo",
+                column: "VideosId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserChannels_CreatedById",
+                table: "UserChannels",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserChannels_RemovedById",
+                table: "UserChannels",
+                column: "RemovedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserChannels_UpdatedById",
+                table: "UserChannels",
+                column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserChannels_UserId",
+                table: "UserChannels",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserFollows_FollowingId",
                 table: "UserFollows",
                 column: "FollowingId");
@@ -977,6 +1168,11 @@ namespace Lachi.Migrations
                 column: "UpdatedById");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Videos_UserChannelId",
+                table: "Videos",
+                column: "UserChannelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_VideoStatuses_CreatedById",
                 table: "VideoStatuses",
                 column: "CreatedById");
@@ -1025,6 +1221,9 @@ namespace Lachi.Migrations
                 name: "GameUser");
 
             migrationBuilder.DropTable(
+                name: "PlaylistVideo");
+
+            migrationBuilder.DropTable(
                 name: "UserFollows");
 
             migrationBuilder.DropTable(
@@ -1049,10 +1248,16 @@ namespace Lachi.Migrations
                 name: "Genres");
 
             migrationBuilder.DropTable(
+                name: "Playlists");
+
+            migrationBuilder.DropTable(
                 name: "Videos");
 
             migrationBuilder.DropTable(
                 name: "Games");
+
+            migrationBuilder.DropTable(
+                name: "UserChannels");
 
             migrationBuilder.DropTable(
                 name: "GameStudios");

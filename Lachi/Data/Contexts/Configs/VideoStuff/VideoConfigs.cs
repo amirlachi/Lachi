@@ -23,6 +23,10 @@ namespace Lachi.Data.Contexts.Configs.VideoStuff
                   .HasForeignKey(v => v.OwnerId)
                   .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasOne(v => v.UserChannel)
+                .WithMany(c => c.Videos)
+                .HasForeignKey(v => v.UserChannelId);
+
             builder.HasMany(v => v.FavoriteByUsers)
                   .WithMany(u => u.FavoriteVideos).UsingEntity<Dictionary<string, object>>(
                        "UserVideo",

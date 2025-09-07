@@ -10,6 +10,7 @@ namespace Lachi.Data.Entities.UserStuff
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Bio { get; set; }
+        public UserChannel? UserChannel { get; set; }
         public ICollection<Video>? FavoriteVideos { get; set; }
         public ICollection<Game>? FavoriteGames { get; set; }
         public ICollection<Video>? UploadedVideos { get; set; }

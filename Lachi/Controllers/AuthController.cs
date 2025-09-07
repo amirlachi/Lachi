@@ -1,15 +1,14 @@
 ﻿using Lachi.Data.Entities.UserStuff;
 using Lachi.Models;
-
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using System.Security.Claims;
+using Lachi.Data.Contexts;
 
 namespace Lachi.Controllers
 {
-    public class AuthController(SignInManager<User> signInManager) : Controller
+    public class AuthController(DataBaseContext db, SignInManager<User> signInManager, UserManager<User> userManager) : Controller
     {
         public IActionResult Login(string? returnUrl = null)
         {
@@ -37,6 +36,121 @@ namespace Lachi.Controllers
             }
 
             ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور اشتباه است");
+            return View(dto);
+        }
+
+        [HttpGet]
+        public IActionResult Register(string? returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View(new RegisterDto());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterDto dto, string? returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+
+            if (!ModelState.IsValid)
+                return View(dto);
+
+            var user = new User
+            {
+                UserName = dto.UserName,
+                Email = dto.Email,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                IsActive = true,
+                IsRemoved = false,
+                CreateAt = DateTime.UtcNow,
+                CreatedById = new Guid("b3f6841d-be7a-4724-c605-08dde95f8d64")
+            };
+
+            var result = await userManager.CreateAsync(user, dto.Password);
+
+            if (result.Succeeded)
+            {
+                await signInManager.SignInAsync(user, isPersistent: false);
+
+                var channel = new UserChannel
+                {
+                    UserId = user.Id,
+                    Name = $"{user.UserName} Channel",
+                    CreateAt = DateTime.UtcNow
+                };
+                db.UserChannels.Add(channel);
+                await db.SaveChangesAsync();
+
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    return Redirect(returnUrl);
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
+
+            return View(dto);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+                return RedirectToAction("Login");
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+                return RedirectToAction("Login");
+
+            var dto = new ProfileDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName!,
+                Email = user.Email!
+            };
+
+            return View(dto);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile(ProfileDto dto)
+        {
+            if (!ModelState.IsValid)
+                return View(dto);
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+                return RedirectToAction("Login");
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+                return RedirectToAction("Login");
+
+            user.FirstName = dto.FirstName;
+            user.LastName = dto.LastName;
+            user.UserName = dto.UserName;
+            user.Email = dto.Email;
+
+            var result = await userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "پروفایل با موفقیت ویرایش شد";
+                return RedirectToAction("Profile");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
             return View(dto);
         }
 

@@ -1,4 +1,5 @@
 ﻿@using Lachi.Areas.Admin.Models.User
+@using Lachi.Data.Entities.UserStuff
 @using Lachi.Models.Common
 @model PagedResult<UserDto>
 @{
@@ -46,7 +47,11 @@
                                         <p class="text-xs text-secondary mb-0">Organization</p> *@
                                     </td>
                                     <td class="align-middle text-center text-sm">
-                                        <span class="badge badge-sm @(item.IsActive ? "bg-gradient-success" : "bg-gradient-secondary") ">@(item.IsActive?"فعال": "غیرفعال")</span>
+                                        <form asp-action="ToggleStatus" asp-route-id="@item.Id" method="post" style="display:inline">
+                                            <button type="submit" class="btn btn-sm @(item.IsActive ? "btn-warning" : "btn-info")">
+                                                @(item.IsActive ? "غیرفعال کن" : "فعال کن")
+                                            </button>
+                                        </form>
                                     </td>
                                     <td class="align-middle text-center">
                                         <span class="text-secondary text-xs font-weight-bold">@item.CreateAt.ToString("yyyy/MM/dd")</span>
@@ -55,12 +60,16 @@
                                         @* <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="View">
                                             جزئیات
                                         </a> *@
-                                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit">
+                                        <a asp-area="Admin" asp-controller="User" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit">
                                             ویرایش
                                         </a>
-                                        @* <a href="javascript:;" class="text-danger font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Delete">
-                                            حذف
-                                        </a> *@
+                                        <form asp-area="Admin" asp-controller="User" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger font-weight-bold text-xs"
+                                                    onclick="return confirm('آیا مطمئنید؟')">
+                                                حذف
+                                            </button>
+                                        </form>
+
                                     </td>
                                 </tr>
                             }

@@ -13,6 +13,9 @@ namespace Lachi.Data.Entities.VideoStuff
         public User Owner { get; set; } = null!;
         public int GameId { get; set; }
         public Game Game { get; set; } = null!;
+        public int UserChannelId { get; set; }
+        public UserChannel UserChannel { get; set; } = null!;
+        public ICollection<Playlist>? Playlists { get; set; }
         public ICollection<VideoComment>? Comments { get; set; }
         public ICollection<VideoStatus> Statuses { get; set; } = new HashSet<VideoStatus>();
         public ICollection<User>? FavoriteByUsers { get; set; }

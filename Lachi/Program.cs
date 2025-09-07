@@ -2,11 +2,15 @@ using Lachi;
 using Lachi.Areas.Admin.Mappings;
 using Lachi.Data.Contexts;
 using Lachi.Data.Entities.UserStuff;
-
+using Lachi.Mappings;
+using Lachi.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<FollowService>();
+builder.Services.AddScoped<ChannelService>();
+
 
 builder.Services.AddDbContext<DataBaseContext>(option=> {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -35,6 +39,8 @@ builder.Services.ConfigureApplicationCookie(option =>
 builder.Services.AddAutoMapper(options =>
 {
     options.AddMaps(typeof(UserMappingProfile).Assembly);
+    options.AddMaps(typeof(ChannelMappingProfile).Assembly);
+
 });
 
 var app = builder.Build();

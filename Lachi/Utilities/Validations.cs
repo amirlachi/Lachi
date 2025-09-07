@@ -4,30 +4,36 @@ namespace Lachi.Utilities
 {
     public static class Validations
     {
-        public static ResultDto IsImageFileValid(string path)
+        public static ResultDto IsFileValid(string path, string[] allowedExtensions)
         {
             if (!File.Exists(path))
-                return new ResultDto(false, "عکس یافت نشد!");
+                return new ResultDto(false, "فایل یافت نشد!");
 
             try
             {
                 string ext = Path.GetExtension(path).ToLower();
-                string[] allowedExtensions = { ".jpg", ".jpeg", ".png" };
                 if (!allowedExtensions.Contains(ext))
-                    return new ResultDto(false, "فرمت عکس مجاز نیست");
+                    return new ResultDto(false, "فرمت فایل مجاز نیست");
 
                 using (var stream = File.OpenRead(path))
                 {
                     if (stream.Length <= 0)
-                        return new ResultDto(false, "عکس خالی است!");
+                        return new ResultDto(false, "فایل خالی است!");
                 }
 
                 return new ResultDto(true);
             }
             catch
             {
-                return new ResultDto(false, "در باز کردن عکس مشکلی رخ داد!");
+                return new ResultDto(false, "در باز کردن فایل مشکلی رخ داد!");
             }
         }
+
+        public static ResultDto IsImageFileValid(string path)
+            => IsFileValid(path, new[] { ".jpg", ".jpeg", ".png" });
+
+        public static ResultDto IsVideoFileValid(string path)
+            => IsFileValid(path, new[] { ".mp4", ".avi", ".mov", ".mkv" });
+
     }
 }
