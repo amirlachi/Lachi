@@ -14,7 +14,7 @@ namespace Lachi.Services
             .Include(c => c.User)
             .Include(c => c.Videos)
             .Include(c => c.Playlists)
-            .Where(c => !c.User.IsRemoved && c.User.IsActive);
+            .Where(c => !c.User!.IsRemoved && c.User.IsActive);
 
         public async Task<UserChannel?> GetById(Guid id) =>
             await GetAll().FirstOrDefaultAsync(c => c.UserId == id);
@@ -27,7 +27,7 @@ namespace Lachi.Services
 
         public async Task<ResultDto> Create(UserChannel channel)
         {
-            if (await IsExistName(channel.Name))
+            if (await IsExistName(channel.Name!))
                 return new ResultDto(false, "کانالی با این نام قبلاً ثبت شده است!");
 
             if (!string.IsNullOrEmpty(channel.ProfileImagePath))
@@ -72,7 +72,7 @@ namespace Lachi.Services
         {
             try
             {
-                channel.User.IsActive = false;
+                channel.User!.IsActive = false;
                 channel.User.IsRemoved = true;
 
                 db.UserChannels.Update(channel);

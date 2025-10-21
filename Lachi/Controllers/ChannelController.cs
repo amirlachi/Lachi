@@ -29,16 +29,16 @@ namespace Lachi.Controllers
             return View(dto);
         }
 
-        public async Task<IActionResult> Index(BaseRequest request)
+        public Task<IActionResult> Index(BaseRequest request)
         {
             var query = channelService.GetAll()
-                .Where(c => c.User.IsActive && !c.User.IsRemoved)
+                .Where(c => c.User!.IsActive && !c.User.IsRemoved)
                 .ApplyFilters(request)
                 .ProjectTo<UserChannelDto>(mapper.ConfigurationProvider);
 
             var channels = query.ToPagedResult(request.Page, request.PageSize);
 
-            return View(channels);
+            return Task.FromResult<IActionResult>(View(channels));
         }
 
         public IActionResult Create() => View();

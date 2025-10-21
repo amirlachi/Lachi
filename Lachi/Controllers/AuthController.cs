@@ -9,7 +9,7 @@ using Lachi.Services;
 
 namespace Lachi.Controllers
 {
-    public class AuthController(DataBaseContext db, SignInManager<User> signInManager, UserManager<User> userManager, ChannelService channelService) : Controller
+    public class AuthController(SignInManager<User> signInManager, UserManager<User> userManager, ChannelService channelService) : Controller
     {
         public IActionResult Login(string? returnUrl = null)
         {
@@ -109,8 +109,8 @@ namespace Lachi.Controllers
 
             var dto = new ProfileDto
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                FirstName = user.FirstName!,
+                LastName = user.LastName!,
                 UserName = user.UserName!,
                 Email = user.Email!
             };

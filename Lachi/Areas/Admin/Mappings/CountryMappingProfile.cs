@@ -16,7 +16,7 @@ namespace Lachi.Areas.Admin.Mappings
 
             CreateMap<Country, CreateByDto>()
                 .ForMember(dest => dest.FullName,
-                           opt => opt.MapFrom(src => src.CreatedBy.FirstName + " " + src.CreatedBy.LastName));
+                           opt => opt.MapFrom(src => src.CreatedBy!.FirstName + " " + src.CreatedBy.LastName));
 
             CreateMap<Country, UpdateByDto>()
                 .ForMember(dest => dest.FullName,

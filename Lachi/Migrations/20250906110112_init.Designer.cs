@@ -13,7 +13,7 @@ namespace Lachi.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
     [Migration("20250906110112_init")]
-    partial class init
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
